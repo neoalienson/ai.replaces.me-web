@@ -1,3 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://ai.replaces.me/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "AI replaces me!"
+theme = "PaperMod"
