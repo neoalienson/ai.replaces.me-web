@@ -1,0 +1,26 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Hugo
+        run: |
+          wget https://github.com/gohugoio/hugo/releases/download/v0.88.1/hugo_extended_0.88.1_Linux-64bit.tar.gz
+          tar -xvf hugo_extended_0.88.1_Linux-64bit.tar.gz
+          sudo mv hugo /usr/local/bin/hugo
+      - name: Build
+        run: hugo --minify -d ../public
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ../public
+          cname: ai.replaces.me
