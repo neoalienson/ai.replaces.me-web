@@ -1,111 +1,74 @@
 ---
 title: "Creating a Blog With Hugo"
 date: 2023-03-21T02:01:38+08:00
-draft: true
+draft: false
 ---
-The first step to have AI replaces me is uses it to generate this blog site. Let's try with GPT-4. 
 
-### Prompt:
+{{< toc >}}
 
-Create a blog "ai.replaces me" with hugo, a static page generator. It uses hug theme PaperMod. The blog should create under folder hugo. The blog will host on GitHub Page with domain name ai.replaces.me. Create ci/cd pipelines with github actions. The github actions uses self-hosted runner. Create front page of the blog describing the sadness on how an software engineer's work is being replaced by AI. Create a blog page with above step for non-technical readers.
+## Setup Hugo and GitHub Pages
+The first step to have AI replaces me is uses it to generate this blog site. Let's try with ChatGPT 
 
-### GPT-4
+#### Prompt
+Create a blog “ai.replaces.me” with hugo, a static page generator. It uses hugo theme PaperMod.  The blog will host on GitHub Page with domain name ai.replaces.me. Create ci/cd pipelines with github actions. The site will deploy to github-pages environment by the github actions workflow. The github actions uses self-hosted runner.
 
-Below are the steps to create a blog using Hugo, the PaperMod theme, and hosting it on GitHub Pages. We will also create a CI/CD pipeline using GitHub Actions and a self-hosted runner.
+#### ChatGPT
 
-Step 1: Install Hugo
+To create a blog "ai.replaces.me" with Hugo and deploy it to GitHub Pages using GitHub Actions, you can follow these steps:
 
-Install Hugo by following the instructions on Hugo's official website.
+1. Install Hugo on your local machine.
 
-Step 2: Create a new Hugo site
+2. Create a new Hugo site by running the command hugo new site ai.replaces.me in your terminal.
 
-In your terminal, run the following command:
+3. Navigate to the new site directory by running cd ai.replaces.me.
 
-hugo new site hugo
-cd hugo
-Step 3: Add the PaperMod theme
+4. Add the PaperMod theme as a submodule by running git submodule add https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod.
 
-Add the PaperMod theme as a submodule:
+5. Copy the example config.toml file from the theme by running cp themes/PaperMod/exampleSite/config.toml ..
 
-git submodule add https://github.com/adityatelange/hugo-PaperMod themes/PaperMod
-Step 4: Configure the site
+6. Edit the config.toml file to your liking, including setting the baseURL to https://ai.replaces.me.
 
-Copy the example site configuration from the theme:
+7. Create a new content file for your first blog post by running hugo new posts/my-first-post.md.
 
-cp -R themes/PaperMod/exampleSite/* .
-Edit the config/_default/config.yaml file to set your site's title, author, and other settings.
+8. Write your blog post in Markdown format in the newly created file.
 
-Step 5: Create content
+9. Add, commit, and push your changes to a new GitHub repository.
 
-Create a new post describing the sadness of a software engineer's work being replaced by AI:
+10. In the repository settings on GitHub, enable GitHub Pages and set the source to the gh-pages branch.
 
-hugo new blog/sadness-of-ai-replacing-work.md
-Edit the content/blog/sadness-of-ai-replacing-work.md file and add your content.
+11. Create a new personal access token with the repo scope in your GitHub account settings.
 
-Create a non-technical page explaining the steps:
+12. In the repository settings on GitHub, go to the Secrets tab and add a new secret called ACCESS_TOKEN with the value of your personal access token.
 
-hugo new blog/creating-a-blog-with-hugo-for-non-technical-readers.md
-Edit the content/blog/creating-a-blog-with-hugo-for-non-technical-readers.md file and add your content.
-
-Step 6: Initialize a Git repository
-
-git init
-git add .
-git commit -m "Initial commit"
-Step 7: Create a GitHub repository
-
-Create a new GitHub repository named "ai.replaces.me" and add it as a remote:
-
-git remote add origin https://github.com/yourusername/ai.replaces.me.git
-git push -u origin master
-Step 8: Configure GitHub Actions
-
-Create a .github/workflows/gh-pages.yml file in your repository.
-Add the following content to the file:
-name: GitHub Pages
+13. Create a new workflow file called .github/workflows/deploy.yml with the following contents:
+~~~~
+name: Deploy
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  deploy:
+  build:
     runs-on: self-hosted
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+      - name: Build
+        run: hugo --minify
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./public
+~~~~
+14. Commit and push the workflow file to your repository.
 
-    - name: Setup Hugo
-      uses: peaceiris/actions-hugo@v2
-      with:
-        hugo-version: 'latest'
+15. Wait for the workflow to complete, then visit https://ai.replaces.me to see your deployed blog.
 
-    - name: Build
-      run: hugo --minify
-
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public
-Commit and push the changes:
-git add .github/workflows/gh-pages.yml
-git commit -m "Add GitHub Actions CI/CD pipeline"
-git push
-Step 9: Configure the custom domain
-
-Create a CNAME file in the static directory with the following content:
-ai.replaces.me
-Commit and push the changes:
-git add static/CNAME
-git commit -m "Add custom domain"
-git push
-Configure your domain's DNS settings by adding a CNAME record pointing to your GitHub Pages site (e.g., yourusername.github.io).
-Step 10: Enable GitHub Pages
-
-Go to the repository settings on GitHub.
-In the "GitHub Pages" section, select the gh-pages branch as the source and save.
-Your blog is now live at https://ai.replaces.me.
-
-For non-technical readers, you can create a blog post explaining the steps in a simplified manner or provide a link to a tutorial that covers creating a blog with Hugo and PaperMod.
+That's it! You now have a static blog powered by Hugo and deployed to GitHub Pages using GitHub Actions. You can add more blog posts and customize the theme to your liking.

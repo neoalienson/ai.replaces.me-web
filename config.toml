@@ -2,3 +2,8 @@ baseURL = "https://ai.replaces.me/"
 languageCode = "en-us"
 title = "AI replaces me!"
 theme = "PaperMod"
+[markup]
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 2
