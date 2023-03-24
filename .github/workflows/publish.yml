@@ -59,13 +59,12 @@ jobs:
                   Accept: 'application/octet-stream'
                 }
               });
-              require('fs').writeFileSync(asset.name, Buffer.from(content));
+              require('fs').writeFileSync(asset.name, content.toString('binary'));
               console.log(`Downloaded ${asset.name}.`);
             });
             
       - name: Unzip release assets
         run: |
-          find .
           unzip hugo.zip
           
       - name: Upload artifact
