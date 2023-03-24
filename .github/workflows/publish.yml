@@ -41,7 +41,7 @@ jobs:
           script: |
             await github.rest.repos.createRelease({
               owner: context.repo.owner,
-              repo: ai.replaces.me-hugo,
+              repo: "ai.replaces.me-hugo",
               asset_id: hugo.zip,
             });
 
