@@ -65,6 +65,7 @@ jobs:
             
       - name: Unzip release assets
         run: |
+          find .
           unzip hugo.zip
           
       - name: Upload artifact
