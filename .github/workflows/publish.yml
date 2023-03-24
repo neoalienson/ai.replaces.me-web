@@ -34,15 +34,33 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
-        
+      
       - name: Download release asset from Hugo
         uses: actions/github-script@v6
         with:
           script: |
-            await github.rest.repos.createRelease({
+            const { data: release } = await github.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: "ai.replaces.me-hugo",
-              asset_id: hugo.zip,
+            });        
+            console.log(release.tag_name);
+            const { data: assets } = await github.repos.listReleaseAssets({
+              owner: context.repo.owner,
+              repo: "ai.replaces.me-hugo",
+              release_id: release.id
+            });
+            assets.forEach(async asset => {
+              console.log(`Downloading ${asset.name}...`);
+              const { data } = await github.repos.downloadReleaseAsset({
+                owner: context.repo.owner,
+                repo: "ai.replaces.me-hugo",
+                asset_id: asset.id,
+                headers: {
+                  Accept: 'application/octet-stream'
+                }
+              });
+              require('fs').writeFileSync(asset.name, data);
+              console.log(`Downloaded ${asset.name}.`);
             });
 
   # Deployment job
