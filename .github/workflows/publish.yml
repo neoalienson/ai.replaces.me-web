@@ -65,7 +65,7 @@ jobs:
             
       - name: Unzip release assets
         run: |
-          zip -r hugo.zip public
+          unzip hugo.zip
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
