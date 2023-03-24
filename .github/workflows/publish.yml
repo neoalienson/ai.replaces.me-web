@@ -39,19 +39,19 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { data: release } = await github.repos.getLatestRelease({
+            const { data: release } = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: "ai.replaces.me-hugo",
             });        
             console.log(release.tag_name);
-            const { data: assets } = await github.repos.listReleaseAssets({
+            const { data: assets } = await github.rest.repos.listReleaseAssets({
               owner: context.repo.owner,
               repo: "ai.replaces.me-hugo",
               release_id: release.id
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
-              const { data } = await github.repos.downloadReleaseAsset({
+              const { data } = await github.rest.repos.downloadReleaseAsset({
                 owner: context.repo.owner,
                 repo: "ai.replaces.me-hugo",
                 asset_id: asset.id,
