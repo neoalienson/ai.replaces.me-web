@@ -40,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: release_asset
-          repo: "neoalienson/ai.replaces.me-hugo"
+          repo: neoalienson/ai.replaces.me-hugo
           path: hugo.zip
 
   # Deployment job
