@@ -62,6 +62,15 @@ jobs:
               require('fs').writeFileSync(asset.name, Buffer.from(content, 'base64'));
               console.log(`Downloaded ${asset.name}.`);
             });
+            
+      - name: Unzip release assets
+        run: |
+          zip -r hugo.zip public
+          
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public
 
   # Deployment job
   deploy:
