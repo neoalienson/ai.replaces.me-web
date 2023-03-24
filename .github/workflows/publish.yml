@@ -51,7 +51,7 @@ jobs:
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
-              const { data } = await github.rest.repos.downloadReleaseAsset({
+              const { data } = await github.rest.repos.getReleaseAsset({
                 owner: context.repo.owner,
                 repo: "ai.replaces.me-hugo",
                 asset_id: asset.id,
