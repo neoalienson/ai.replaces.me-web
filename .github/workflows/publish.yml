@@ -52,7 +52,7 @@ jobs:
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
               const file = fs.createWriteStream("hugo.zip");
-              const { data: asset } = await github.rest.repos.getReleaseAsset({
+              const { data: item } = await github.rest.repos.getReleaseAsset({
                 owner: context.repo.owner,
                 repo: "ai.replaces.me-hugo",
                 asset_id: asset.id,
@@ -60,7 +60,7 @@ jobs:
                   Accept: 'application/octet-stream'
                 }
               });
-              require('fs').writeFileSync(asset.name, Buffer.from(asset.data, 'base64'));
+              require('fs').writeFileSync(item.name, Buffer.from(item.data, 'base64'));
               console.log(`Downloaded ${asset.name}.`);
             });
 
