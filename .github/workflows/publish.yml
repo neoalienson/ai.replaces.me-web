@@ -51,7 +51,6 @@ jobs:
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
-              const file = fs.createWriteStream("hugo.zip");
               const { data: item } = await github.rest.repos.getReleaseAsset({
                 owner: context.repo.owner,
                 repo: "ai.replaces.me-hugo",
