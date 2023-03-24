@@ -34,14 +34,15 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
-      - name: Download release asset
-        uses: actions/download-artifact@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          name: release_asset
-          repo: neoalienson/ai.replaces.me-hugo
-          path: hugo.zip
+        
+      - name: Download release asset from Hugo
+        uses: actions/github-script@v6
+        with: |
+          await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: ai.replaces.me-hugo,
+              asset_id: hugo.zip,
+            });
 
   # Deployment job
   deploy:
