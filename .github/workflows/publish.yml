@@ -53,10 +53,11 @@ jobs:
               console.log(`Downloading ${asset.name}...`);
               const response = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
               const jsonResponse = await response.json();
-              const download = await fetch(jsonResponse.browser_download_url);
+            
               const file = require('fs').createWriteStream(asset.name);
-              console.log(download);
-              download.body.blob().pipe(file);
+              fetch(jsonResponse.browser_download_url)
+                .then(download => download.body.blob().pipe(file));
+              
               console.log(`Downloaded ${asset.name}.`);
             });
             
