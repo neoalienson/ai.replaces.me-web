@@ -51,12 +51,9 @@ jobs:
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);       
-            
-              import fetch from 'node-fetch';
-
-              const response = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`);
+              const response = await require('node-fetch').fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`);
               if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
-
+              require('fs').writeFileSync(asset.name, response.body);
               console.log(`Downloaded ${asset.name}.`);
             });
             
