@@ -56,7 +56,7 @@ jobs:
             
               const file = require('fs').createWriteStream(asset.name);
               fetch(jsonResponse.browser_download_url)
-                .then(download => download.body.pipe(file));
+                .then(download => console.log( download.body ));
               
               console.log(`Downloaded ${asset.name}.`);
             });
