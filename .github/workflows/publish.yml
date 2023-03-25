@@ -51,10 +51,9 @@ jobs:
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);       
-              const response = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`);
-              if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
-              const file = require('fs').createWriteStream(asset.name);
-              response.body.blob().pipe(file);
+              fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
+                .then(response => console.log(response.body));
+
               
               console.log(`Downloaded ${asset.name}.`);
             });
