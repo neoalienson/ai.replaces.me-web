@@ -52,7 +52,8 @@ jobs:
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
               fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
-                .then(response => console.log(response.json()));
+                .then(response => response.json())
+                .then(jsonData => console.log(jsonData));
 
               console.log(`Downloaded ${asset.name}.`);
             });
