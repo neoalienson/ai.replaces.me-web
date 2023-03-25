@@ -51,17 +51,10 @@ jobs:
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
-              
-              const { data: content } = await github.rest.repos.getReleaseAsset({
-                owner: context.repo.owner,
-                repo: "ai.replaces.me-hugo",
-                asset_id: asset.id,
-                headers: {
-                 Accept: 'application/octet-stream'
-                }
-              });
-              require('fs').writeFileSync(asset.name, Buffer.from(content));
-              
+              const response = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
+              const jsonResponse = await response.json();
+              console.log(jsonResponse);
+              await exec.exec('wget', `https://github.com/neoalienson/ai.replaces.me-hugo/releases/download/v1126/hugo.zip`);
               console.log(`Downloaded ${asset.name}.`);
             });
             
