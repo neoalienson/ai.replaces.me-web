@@ -55,7 +55,7 @@ jobs:
               if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
               console.log(`size ${response.body.byteLength}.`);
               const blob = response.blob();
-              require('fs').writeFileSync(asset.name, blob.stream());
+              require('fs').writeFileSync(asset.name, blob);
               console.log(`Downloaded ${asset.name}.`);
             });
             
