@@ -53,9 +53,9 @@ jobs:
               console.log(`Downloading ${asset.name}...`);       
               const response = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`);
               if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
-              console.log(`size ${response.body.byteLength}.`);
-              const blob = response.blob();
-              require('fs').writeFileSync(asset.name, blob);
+              const file = require('fs').createWriteStream(asset.name);
+              respone.body.pipe(file);
+              
               console.log(`Downloaded ${asset.name}.`);
             });
             
