@@ -51,15 +51,9 @@ jobs:
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
-              const { data: content } = await github.rest.repos.getReleaseAsset({
-                owner: context.repo.owner,
-                repo: "ai.replaces.me-hugo",
-                asset_id: asset.id,
-                headers: {
-                  Accept: 'application/octet-stream'
-                }
-              });
-              require('fs').writeFileSync(asset.name, Buffer.from(content.file));
+              const response = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
+              const jsonResponse = await response.json();
+              await exec('wget', [jsonResponse.browser_download_url]);
               
               console.log(`Downloaded ${asset.name}.`);
             });
