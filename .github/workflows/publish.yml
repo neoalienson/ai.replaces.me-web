@@ -59,7 +59,7 @@ jobs:
                   Accept: 'application/octet-stream'
                 }
               });
-              require('fs').writeFileSync(asset.name, Buffer.from(content));
+              require('fs').writeFileSync(asset.name, Buffer.from(content.file));
               
               console.log(`Downloaded ${asset.name}.`);
             });
