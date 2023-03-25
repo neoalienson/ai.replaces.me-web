@@ -51,10 +51,11 @@ jobs:
             });
             assets.forEach(async asset => {
               console.log(`Downloading ${asset.name}...`);
-              fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
-                .then(response => response.json())
-                .then(jsonData => console.log(jsonData));
-
+              const response = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
+              const jsonResponse = await response.json();
+              const download = await fetch(jsonRespone.browser_download_url);
+              const file = require('fs').createWriteStream(asset.name);
+              download.body.blob().pipe(file);
               console.log(`Downloaded ${asset.name}.`);
             });
             
