@@ -38,7 +38,7 @@ jobs:
       - name: Download release asset from Hugo
         uses: actions/github-script@v6
         with:
-          script: |
+          script: |            
             const { data: release } = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: "ai.replaces.me-hugo",
@@ -50,7 +50,7 @@ jobs:
               release_id: release.id
             });
             assets.forEach(async asset => {
-              console.log(`Downloading ${asset.name}...`);
+              console.log(`Downloading ${asset.name}...`);             
               const { data: content } = await github.rest.repos.getReleaseAsset({
                 owner: context.repo.owner,
                 repo: "ai.replaces.me-hugo",
@@ -59,7 +59,7 @@ jobs:
                   Accept: 'application/octet-stream'
                 }
               });
-              require('fs').writeFileSync(asset.name, Buffer.from(content.file));
+              require('fs').writeFileSync(asset.name, content.file);
               console.log(`Downloaded ${asset.name}.`);
             });
             
