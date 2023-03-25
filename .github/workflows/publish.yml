@@ -50,9 +50,11 @@ jobs:
               release_id: release.id
             });
             assets.forEach(async asset => {
-              console.log(`Downloading ${asset.name}...`);       
-              fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`)
-                .then(response => console.log(response.body));
+              console.log(`Downloading ${asset.name}...`);
+              const url = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`);
+              console.log(url.json);
+              
+
 
               
               console.log(`Downloaded ${asset.name}.`);
