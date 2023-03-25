@@ -57,7 +57,7 @@ jobs:
               const { finished } = require('stream/promises');
 
               const stream = fs.createWriteStream('hugo.zip');
-              const { body } = await fetch(`https://api.github.com/repos/${context.repo.owner}/${ai.replaces.me-hugo}/releases/assets/${asset.id}`);
+              const { body } = await fetch(`https://api.github.com/repos/${context.repo.owner}/ai.replaces.me-hugo/releases/assets/${asset.id}`);
               await finished(Readable.fromWeb(body).pipe(stream));
               console.log(`Downloaded ${asset.name}.`);
             });
