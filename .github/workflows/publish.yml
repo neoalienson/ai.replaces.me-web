@@ -57,7 +57,7 @@ jobs:
                 repo: "ai.replaces.me-hugo",
                 asset_id: asset.id,
                 headers: {
-                // Accept: 'application/octet-stream'
+                 Accept: 'application/octet-stream'
                 }
               });
               require('fs').writeFileSync(asset.name, Buffer.from(content));
