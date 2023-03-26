@@ -1,4 +1,3 @@
-# Sample workflow for building and deploying a Hugo site to GitHub Pages
 name: Deploy Sites to Pages
 
 on:
@@ -74,12 +73,12 @@ jobs:
           script: |            
             const { data: release } = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
-              repo: "ai.replaces.me-hugo",
+              repo: "ai.replaces.me-minigames",
             });        
             console.log(release.tag_name);
             const { data: assets } = await github.rest.repos.listReleaseAssets({
               owner: context.repo.owner,
-              repo: "ai.replaces.me-hugo",
+              repo: "ai.replaces.me-minigames",
               release_id: release.id
             });
             assets.forEach(async asset => {
