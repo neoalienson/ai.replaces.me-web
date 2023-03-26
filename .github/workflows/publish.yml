@@ -36,7 +36,7 @@ jobs:
         uses: actions/configure-pages@v3
       
       - name: Download release asset from Hugo
-        uses: actions/github-script@v6.4.0
+        uses: actions/github-script@v6
         with:
           script: |            
             const { data: release } = await github.rest.repos.getLatestRelease({
@@ -67,6 +67,40 @@ jobs:
         run: |
           rm -rf public
           unzip -o hugo.zip
+
+      - name: Download release asset from Minigames
+        uses: actions/github-script@v6
+        with:
+          script: |            
+            const { data: release } = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: "ai.replaces.me-hugo",
+            });        
+            console.log(release.tag_name);
+            const { data: assets } = await github.rest.repos.listReleaseAssets({
+              owner: context.repo.owner,
+              repo: "ai.replaces.me-hugo",
+              release_id: release.id
+            });
+            assets.forEach(async asset => {
+              console.log(`Downloading ${asset.name}...`);
+              const { data: content } = await github.rest.repos.getReleaseAsset({
+                owner: context.repo.owner,
+                repo: "ai.replaces.me-minigames",
+                asset_id: asset.id,
+                headers: {
+                  Accept: 'application/octet-stream'
+                }
+              });
+              require('fs').writeFileSync(asset.name, Buffer.from(content));
+              console.log(`Downloaded ${asset.name}.`);
+            });
+            
+      - name: Unzip release assets
+        run: |
+          unzip -o flutter.zip
+          mv build/web public/minigames
+          rm -rf build
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
